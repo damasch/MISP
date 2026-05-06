@@ -166,9 +166,8 @@
                     <?php endif; ?>
                     
                     <?php if (Configure::read('MISP.showorg') || $isAdmin): ?>
-                    <td class="px-3 py-4 text-center text-sm align-top" 
-                        ondblclick="document.location.href ='<?php echo $baseurl . "/events/index/searchorg:" . $event['Orgc']['id'];?>'">
-                        <a href="<?= $baseurl . '/organisations/view/' . h($event['Orgc']['id']) ?>" 
+                    <td class="px-3 py-4 text-center text-sm align-top" >
+                        <a href="<?= $baseurl . "/events/index/searchorg:" . $event['Orgc']['id'] ?>" 
                             class="block text-center org-logo" 
                             title="<?= __('View organisation %s', h($event['Orgc']['name'])) ?>" 
                             aria-label="<?= __('View organisation %s', h($event['Orgc']['name'])) ?>">
@@ -184,7 +183,7 @@
                     <?php endif;?>
                     <?php if (in_array('owner_org', $columns, true) || (Configure::read('MISP.showorgalternate') && Configure::read('MISP.showorg'))): ?>
                     <td class="px-3 py-4 text-center text-sm align-top" ondblclick="document.location.href ='<?php echo $baseurl . "/events/index/searchorg:" . $event['Org']['id'];?>'">
-                        <a href="<?= $baseurl . '/organisations/view/' . h($event['Org']['id']) ?>" 
+                        <a href="<?= $baseurl . '/events/index/searchorg:' . h($event['Org']['id']) ?>" 
                             class="block text-center org-logo"
                             title="<?= __('View organisation %s', h($event['Org']['name'])) ?>" 
                             aria-label="<?= __('View organisation %s', h($event['Org']['name'])) ?>">
@@ -200,7 +199,9 @@
                     <?php endif; ?>
                     <?php if (in_array('creator_user', $columns, true)): ?>
                     <td class="px-3 py-4 text-sm align-top dblclickElement">
+                        <a href="<?= $baseurl . '/events/index/searchemail:' . h($event['User']['email']) ?>" >
                         <?php echo h($event['User']['email']); ?>
+                        </a>
                     </td>
                     <?php endif; ?>
                     <?php if (in_array('clusters', $columns, true)): ?>
