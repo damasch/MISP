@@ -173,27 +173,29 @@ foreach ($possibleColumns as $possibleColumn) {
                     'escape' => false
                 ]
             ) ?>
-            <?php if (!empty($filters)): ?>
-                    <?php foreach ($filters as $key => $value): ?>
-                        <span class="inline-flex items-center gap-2 rounded-full bg-success px-3 py-1 text-sm text-slate-700">
-                            <span>
-                                <?= h($key) ?>:
-                                <strong><?= h($value) ?></strong>
-                            </span>
-
-                            <?= $this->Html->link(
-                                '×',
-                                $removeFilterUrl($key),
-                                [
-                                    'class' => 'text-slate-500 hover:text-red-600 font-bold',
-                                    'escape' => false,
-                                    'title' => 'Remove filter'
-                                ]
-                            ) ?>
-                        </span>
-                    <?php endforeach; ?>
-            <?php endif; ?>
         </div>
+        <?php if (!empty($filters)): ?>
+            <div class="flex justify-left items-center gap-4"">
+            <?php foreach ($filters as $key => $value): ?>
+                <span class="inline-flex items-center gap-2 rounded-full bg-success px-2 py-1 text-sm text-slate-700">
+                    <span>
+                        <?= h($key) ?>:
+                        <strong><?= h($value) ?></strong>
+                    </span>
+
+                    <?= $this->Html->link(
+                        '×',
+                        $removeFilterUrl($key),
+                        [
+                            'class' => 'text-slate-500 hover:text-red-600 font-bold',
+                            'escape' => false,
+                            'title' => 'Remove filter'
+                        ]
+                    ) ?>
+                </span>
+            <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
         <div class="relative flex">
             <input

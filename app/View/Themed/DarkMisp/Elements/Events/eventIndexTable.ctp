@@ -57,12 +57,20 @@
                             <?= $this->Paginator->sort('user_id', __('Creator user')) ?></th>
                     <?php endif; ?>
                     <?php if (in_array('clusters', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400"><?= __('Clusters') ?>
-                    </th>
+                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
+                            <?= __('Clusters') ?>
+                            <button id="toggleClusters">
+                                <i class="fas fa-caret-square-down text-mispblue"></i>
+                            </button>
+                        </th>
                     <?php endif; ?>
                     <?php if (in_array('tags', $columns, true)): ?>
                         <th class="px-3 py-4 text-left text-sm font-medium text-gray-400 w-150">
                             <?= __('Tags') ?>
+                            <button id="toggleTags" 
+                                class="px-2 py-1 bg-gray-700 text-gray-400 rounded text-xs  break-keep inline-flex items-center">
+                                +
+                            </button>
                         </th>
                     <?php endif; ?>
                     <?php if (in_array('attribute_count', $columns, true)): ?>
@@ -220,23 +228,15 @@
                     </td>
                     <?php endif; ?>
                     <?php if (in_array('tags', $columns, true)): ?>
-                    <td class="px-3 py-4 text-sm align-top">
-                        <?= $this->element('ajaxTags', [
+                    <td class="px-3 py-4 text-sm align-top space-y-2">
+                        <?= $this->element('Events/event_tag_list', array(
                             'event' => $event,
-                            'tags' => $event['EventTag'],
-                            'tagAccess' => false,
-                            'localTagAccess' => false,
-                            'missingTaxonomies' => false,
-                            'columnised' => true,
-                            'static_tags_only' => 1,
-                            'tag_display_style' => Configure::check('MISP.full_tags_on_event_index') ? Configure::read('MISP.full_tags_on_event_index') : 1,
-                            'highlightedTags' => $event['Event']['highlightedTags'] ?? [],
-                        ]);
-                        ?>
+                            'eventId' => $eventId,
+                        )); ?>
                     </td>
                     <?php endif; ?>
                     <?php if (in_array('attribute_count', $columns, true)): ?>
-                    <td class="dblclickElement px-3 py-4 text-sm align-top">
+                    <td class="px-3 py-4 text-sm align-top">
                         <?= $event['Event']['attribute_count']; ?>
                     </td>
                     <?php endif; ?>
@@ -360,6 +360,32 @@
             $(this).distributionNetwork({
                 distributionData: <?= json_encode($distributionData, JSON_UNESCAPED_UNICODE); ?>,
             });
+        });
+        
+        $('#toggleClusters').on('click', function () {
+
+            const $checkboxes = $('input[type="checkbox"][data-show-clusters]');
+            const allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+
+            // Wenn alle checked → alle uncheck, sonst alle check
+            $checkboxes.prop('checked', !allChecked);
+
+            const $icon = $(this).find('i');
+
+            if (allChecked) {
+                $icon.removeClass('fa-caret-square-up').addClass('fa-caret-square-down');
+            } else {
+                $icon.removeClass('fa-caret-square-down').addClass('fa-caret-square-up');
+            }
+        });
+
+        $('#toggleTags').on('click', function () {
+
+            const $checkboxes = $('input[type="checkbox"][data-show-tags]');
+            const allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+
+            // Wenn alle checked → alle uncheck, sonst alle check
+            $checkboxes.prop('checked', !allChecked);
         });
     });
 </script>
