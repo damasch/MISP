@@ -87,45 +87,7 @@ foreach ($possibleColumns as $possibleColumn) {
     </div>
     <div class="events <?php if (!$ajax) echo 'index'; ?> space-y-6">
         <div class="pagination">
-            <?php
-                $pagination = '<ul class="flex items-center gap-1 text-sm">';
-                $pagination .= $this->Paginator->prev(
-                    '&laquo; ' . __('previous'), 
-                    array(
-                        'tag' => 'li', 
-                        'escape' => false,
-                        'class' => 'rounded-md border border-mispblue bg-mispblue text-white hover:bg-mispdarkblue [&>a]:block [&>a]:w-full [&>a]:h-full [&>a]:px-3 [&>a]:py-2'), 
-                    null, 
-                    array(
-                        'tag' => 'li', 
-                        'class' => 'rounded-md border border-mispblue bg-mispnight text-gray-400 cursor-not-allowed [&>span]:block [&>span]:px-3 [&>span]:py-2', 
-                        'escape' => false, 
-                        'disabledTag' => 'span'));
-                $pagination .= $this->Paginator->numbers(
-                    array(
-                        'modulus' => 20, 
-                        'separator' => '', 
-                        'tag' => 'li', 
-                        'currentClass' => 'bg-blue-600 text-white border-blue-600',
-                        'currentTag' => 'span',
-                        'class' => 'px-3 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-mispblue'));
-                $pagination .= $this->Paginator->next(
-                    __('next') . ' &raquo;', 
-                    array(
-                        'tag' => 'li', 
-                        'escape' => false,
-                        'class' => 'rounded-md border border-mispblue bg-mispblue text-white hover:bg-mispdarkblue [&>a]:block [&>a]:w-full [&>a]:h-full [&>a]:px-3 [&>a]:py-2'), 
-                    null, 
-                    array(
-                        'tag' => 'li', 
-                        'class' => 'rounded-md border border-mispblue bg-mispnight text-gray-400 cursor-not-allowed [&>span]:block [&>span]:px-3 [&>span]:py-2',
-                        'escape' => false, 
-                        'disabledTag' => 'span'));
-                
-                $pagination .= '</ul>';
-
-                echo $pagination;
-            ?>
+            <?= $this->element('pagination'); ?>
         </div>
         <div class="flex flex-wrap gap-2 mb-4">
             <div class="flex flex-wrap gap-2 relative">
@@ -216,33 +178,31 @@ foreach ($possibleColumns as $possibleColumn) {
 <?= $this->element('Events/modal_filter_events'); ?>
 
 <div class="mt-4 space-y-6" >
-    <div>
-        <?php
-            $searchScopes = [
-                'searcheventinfo' => __('Event info'),
-                'searchall' => __('All fields'),
-                'searcheventid' => __('ID / UUID'),
-                'searchtags' => __('Tag'),
-            ];
-            $searchKey = 'searcheventinfo';
+    <?php
+        $searchScopes = [
+            'searcheventinfo' => __('Event info'),
+            'searchall' => __('All fields'),
+            'searcheventid' => __('ID / UUID'),
+            'searchtags' => __('Tag'),
+        ];
+        $searchKey = 'searcheventinfo';
 
-            $filterParamsString = [];
-            foreach ($passedArgsArray as $k => $v) {
-                if (isset($searchScopes["search$k"])) {
-                    $searchKey = "search$k";
-                }
-
-                $filterParamsString[] = sprintf(
-                    '%s: %s',
-                    h(ucfirst($k)),
-                    h(is_array($v) ? http_build_query($v) : $v)
-                );
+        $filterParamsString = [];
+        foreach ($passedArgsArray as $k => $v) {
+            if (isset($searchScopes["search$k"])) {
+                $searchKey = "search$k";
             }
-            $filterParamsString = implode(' & ', $filterParamsString);
 
-            echo $this->element('Events/eventIndexTable');
-        ?>
-    </div>
+            $filterParamsString[] = sprintf(
+                '%s: %s',
+                h(ucfirst($k)),
+                h(is_array($v) ? http_build_query($v) : $v)
+            );
+        }
+        $filterParamsString = implode(' & ', $filterParamsString);
+
+        echo $this->element('Events/event_index_table');
+    ?>
 </div>
 <div>
     <p>

@@ -2,15 +2,15 @@
 $location = $this->request->here();
 if (!empty($me)):
 ?>
-<aside class="text-gray-400 fixed left-0 top-16 h-[calc(100vh-4rem)] bg-mispnight border-r border-gray-800 transition-all w-64 flex flex-col z-40">
+<aside id="mainSideBar" class="text-gray-400 fixed left-0 top-16 h-[calc(100vh-4rem)] bg-mispnight border-r border-gray-800 transition-all w-64 flex flex-col z-40">
   
   <div class="p-4 border-b border-gray-800 flex justify-end gap-2">
     <button class="p-2 hover:bg-gray-800 rounded-lg transition-colors" title="Sidebar lösen (als Burger-Menü)">
       <i class="fas fa-thumbtack text-mispblue"></i>
     </button>
-    <label for="minimizeSidebar" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
+    <button id="minimizeSidebar" class="p-2 hover:bg-gray-800 rounded-lg transition-colors">
       <i class="far fa-caret-square-left text-mispblue"></i>
-    </label>
+    </button>
   </div>
   
   <nav class="flex-1 overflow-y-auto p-4 space-y-2">
@@ -27,7 +27,7 @@ if (!empty($me)):
     <div>
       <div>
 
-        <input type="checkbox" id="eventsAsideMenu" class="peer hidden"
+        <input data-main-nav-item type="checkbox" id="eventsAsideMenu" class="peer hidden"
           <?= str_starts_with($location, '/events/index') || 
               str_starts_with($location, '/attributes/index') ? 'checked' : '' ?>
         >
@@ -72,7 +72,7 @@ if (!empty($me)):
     </div>
     <div>
       <div>
-        <input type="checkbox" id="dataModelsAsideMenu" class="peer hidden"
+        <input data-main-nav-item type="checkbox" id="dataModelsAsideMenu" class="peer hidden"
           <?= $location == '/tags/index' || 
               $location == '/tag_collections/index' || 
               $location == '/taxonomies/index' || 
@@ -174,7 +174,7 @@ if (!empty($me)):
     </div>
     <div>
       <div>
-        <input type="checkbox" id="galaxyAsideMenu" class="peer hidden"
+        <input data-main-nav-item type="checkbox" id="galaxyAsideMenu" class="peer hidden"
           <?= $location == '/galaxies/index' || 
               $location == '/galaxy_cluster_relations/index' ? 'checked' : '' ?>
         >
@@ -219,7 +219,7 @@ if (!empty($me)):
     </div>
     <div>
       <div>
-        <input type="checkbox" id="collaborationAsideMenu" class="peer hidden"
+        <input data-main-nav-item type="checkbox" id="collaborationAsideMenu" class="peer hidden"
           <?= str_starts_with($location, '/shadow_attributes/index') || 
               $location == '/threads/index' || 
               $location == '/sharing_groups/index' || 
@@ -308,7 +308,7 @@ if (!empty($me)):
     </div>
     <div>
       <div>
-        <input type="checkbox" id="automationAsideMenu" class="peer hidden"
+        <input data-main-nav-item type="checkbox" id="automationAsideMenu" class="peer hidden"
           <?= $location == '/jobs/index' || 
               $location == '/tasks/index' || 
               $location == '/workflows/triggers' || 
@@ -463,6 +463,22 @@ $(document).ready(function() {
                 alert('<?php echo __('Failed to toggle Beta UI. Please try again.'); ?>');
             }
         });
+    });
+
+    $('#minimizeSidebar').on('click', function(e) {
+      $('#mainSideBar').toggleClass('w-64').toggleClass('w-16');
+      if ($('#mainContent').hasClass('left-64')) {
+        $('#mainContent').removeClass('left-64').addClass('left-16');
+      } else if ($('#mainContent').hasClass('left-16')) {
+        $('#mainContent').addClass('left-64').removeClass('left-16');
+      }
+      
+      const $checkboxes = $('input[type="checkbox"][data-main-nav-item]');
+      console.log($checkboxes);
+      const allChecked = $checkboxes.length === $checkboxes.filter(':checked').length;
+
+      // Wenn alle checked → alle uncheck, sonst alle check
+      $checkboxes.prop('checked', allChecked);
     });
 });
 </script>

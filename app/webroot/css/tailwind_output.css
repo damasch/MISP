@@ -319,6 +319,9 @@
   .left-6 {
     left: calc(var(--spacing) * 6);
   }
+  .left-16 {
+    left: calc(var(--spacing) * 16);
+  }
   .left-64 {
     left: calc(var(--spacing) * 64);
   }
@@ -878,6 +881,9 @@
   .border-mispblue {
     border-color: var(--mispblue);
   }
+  .border-mispdarkblue {
+    border-color: var(--mispdarkblue);
+  }
   .border-primary {
     border-color: var(--primary);
   }
@@ -928,6 +934,9 @@
   }
   .bg-mispblue {
     background-color: var(--mispblue);
+  }
+  .bg-mispdarkblue {
+    background-color: var(--mispdarkblue);
   }
   .bg-mispnight {
     background-color: var(--mispnight);
