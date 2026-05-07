@@ -95,21 +95,41 @@
                             <?= $tag["Tag"]["count"] ?>
                         </td>
                         <td class="px-3 py-4 text-sm align-top text-center">
+                        <?php $tag_id = $tag["Tag"]["id"]; ?>
+                            <?= $this->Form->create('FavouriteTag', [
+                                'url' => ['controller' => 'favourite_tags', 'action' => 'toggle'],
+                                'class' => 'js-favourite-tag-form inline-block',
+                            ]); ?>
+
+                            <?= $this->Form->hidden('FavouriteTag.data', [
+                                'value' => $tag_id
+                            ]); ?>
+
+                            <button type="submit"
+                                    class="toggleFavoriteSettings"
+                                    data-tag-id="<?= h($tag_id) ?>">
+                                <span class="border-1 border-mispblue w-6 h-6 inline-block text-center rounded-sm">
+                                    <i class="fa fa-check <?= $tag["Tag"]["favourite"] ? '' : 'invisible hover:visible' ?>"></i>
+                                </span>
+                            </button>
+
+                            <?= $this->Form->end(); ?>
+                            
                             <?php
-                            echo $this->Form->create('FavouriteTag'. $tag["Tag"]["id"], array(
-                                'url' => $baseurl . '/favourite_tags/toggle',
-                                'name' => 'FavouriteTag',
-                                'data-form-favourite-tag' => '',
-                            ));
-                            echo $this->Form->input('data', array(
-                                'type' => 'checkbox',
-                                'label' => '',
-                                'name' => 'data',
-                                'data-check-favourite-tag' => '',
-                                'value' => $tag["Tag"]["id"],
-                                'checked' => $tag["Tag"]["favourite"],
-                            ));
-                            echo $this->Form->end();
+                            // echo $this->Form->create('FavouriteTag'. $tag["Tag"]["id"], array(
+                            //     'url' => $baseurl . '/favourite_tags/toggle',
+                            //     'name' => 'FavouriteTag',
+                            //     'data-form-favourite-tag' => '',
+                            // ));
+                            // echo $this->Form->input('data', array(
+                            //     'type' => 'checkbox',
+                            //     'label' => '',
+                            //     'name' => 'data',
+                            //     'data-check-favourite-tag' => '',
+                            //     'value' => $tag["Tag"]["id"],
+                            //     'checked' => $tag["Tag"]["favourite"],
+                            // ));
+                            // echo $this->Form->end();
                             ?>
                         </td>
                         <td>
@@ -122,25 +142,40 @@
         </table>
     </div>
 </div>
+
 <script>
-$(document).on('change', '[data-check-favourite-tag]', function (e) {
-    e.preventDefault();
 
-    // passendes Formular finden
-    var $form = $(this).closest('form[data-form-favourite-tag]');
+$(document).on('submit', '.js-favourite-tag-form', function (event) {
+    event.preventDefault();
 
-    if (!$form.length) return;
+    const $form = $(this);
+    const $button = $form.find('.toggleFavoriteSettings');
+    const $icon = $button.find('i');
 
     $.ajax({
         url: $form.attr('action'),
-        type: $form.attr('method') || 'POST',
+        type: 'POST',
         data: $form.serialize(),
-        success: function (res) {
-            console.log('Favourite updated');
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
         },
-        error: function (err) {
-            console.error('Error:', err);
+        beforeSend: function () {
+            $button.addClass('opacity-50 pointer-events-none');
+        },
+        success: function () {
+            $icon.toggleClass('invisible hover:visible');
+
+            // Wichtig: Token wurde verbraucht.
+            // Sicherste Variante:
+            location.reload();
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+        },
+        complete: function () {
+            $button.removeClass('opacity-50 pointer-events-none');
         }
     });
 });
+
 </script>

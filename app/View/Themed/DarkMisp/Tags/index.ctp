@@ -16,6 +16,9 @@
             'tags' => $list
         )); ?> 
     </div>
+    <div class="pagination">
+        <?= $this->element('pagination'); ?>
+    </div>
     <div>
         <p>
             <?php
@@ -24,11 +27,5 @@
                 ));
                 ?>
         </p>
-        <div class="pagination">
-            <?= $pagination ?>
-        </div>
-    </div>
-    <div class="pagination">
-        <?= $this->element('pagination'); ?>
     </div>
 </div>

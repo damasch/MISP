@@ -8,48 +8,25 @@
             <span>Add Attribute</span>
         </button>
     </div>
-    <div class="attributes <?php if (!$ajax) echo 'index'; ?> space-y-6">
-        <div class="pagination">
+    <div class="pagination">
+        <?= $this->element('pagination'); ?>
+    </div>
+    <div class="pagination">
+         <?= $this->element('Attributes/attribute_index_table', array(
+            'attributes' => $attributes
+        )); ?> 
+    </div>
+    <div class="pagination">
+        <?= $this->element('pagination'); ?>
+    </div>
+    <div>
+        <p>
             <?php
-                $pagination = '<ul class="flex items-center gap-1 text-sm">';
-                    $pagination .= $this->Paginator->prev(
-                        '&laquo; ' . __('previous'), 
-                        array(
-                            'tag' => 'li', 
-                            'escape' => false,
-                            'class' => 'rounded-md border border-mispblue bg-mispblue text-white hover:bg-mispdarkblue [&>a]:block [&>a]:w-full [&>a]:h-full [&>a]:px-3 [&>a]:py-2'), 
-                        null, 
-                        array(
-                            'tag' => 'li', 
-                            'class' => 'rounded-md border border-mispblue bg-mispnight text-gray-400 cursor-not-allowed [&>span]:block [&>span]:px-3 [&>span]:py-2', 
-                            'escape' => false, 
-                            'disabledTag' => 'span'));
-                $pagination .= $this->Paginator->numbers(
-                    array(
-                        'modulus' => 20, 
-                        'separator' => '', 
-                        'tag' => 'li', 
-                        'currentClass' => 'bg-blue-600 text-white border-blue-600',
-                        'currentTag' => 'span',
-                        'class' => 'px-3 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-mispblue'));
-                $pagination .= $this->Paginator->next(
-                    __('next') . ' &raquo;', 
-                    array(
-                        'tag' => 'li', 
-                        'escape' => false,
-                        'class' => 'rounded-md border border-mispblue bg-mispblue text-white hover:bg-mispdarkblue [&>a]:block [&>a]:w-full [&>a]:h-full [&>a]:px-3 [&>a]:py-2'), 
-                    null, 
-                    array(
-                        'tag' => 'li', 
-                        'class' => 'rounded-md border border-mispblue bg-mispnight text-gray-400 cursor-not-allowed [&>span]:block [&>span]:px-3 [&>span]:py-2',
-                        'escape' => false, 
-                        'disabledTag' => 'span'));
-                
-                $pagination .= '</ul>';
-
-                echo $pagination;
-            ?>
-        </div>
+            echo $this->Paginator->counter(array(
+                'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+                ));
+                ?>
+        </p>
     </div>
 </div>
 
