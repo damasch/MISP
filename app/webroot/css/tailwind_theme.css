@@ -89,6 +89,83 @@
   --mispaccentnight: #0f1421;
 }
 
+@media print {
+  :root,
+  .dark {
+    --background: #ffffff;
+    --foreground: #000000;
+
+    --card: #ffffff;
+    --card-foreground: #000000;
+
+    --popover: #ffffff;
+    --popover-foreground: #000000;
+
+    --primary: #000000;
+    --primary-foreground: #ffffff;
+
+    --secondary: #ffffff;
+    --secondary-foreground: #000000;
+
+    --muted: #ffffff;
+    --muted-foreground: #333333;
+
+    --accent: #ffffff;
+    --accent-foreground: #000000;
+
+    --border: #cccccc;
+    --input: #ffffff;
+    --ring: #000000;
+
+    --sidebar: #ffffff;
+    --sidebar-foreground: #000000;
+    --sidebar-border: #cccccc;
+
+    --mispnight: #ffffff;
+    --mispaccentnight: #ffffff;
+    --mispblue: #000000;
+    --mispdarkblue: #000000;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header,
+  aside,
+  nav,
+  [data-no-print] {
+    display: none !important;
+  }
+
+  #mainContent {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
 @theme inline {
   --color-mispblue: var(--mispblue);
   --color-mispdarkblue: var(--mispdarkblue);

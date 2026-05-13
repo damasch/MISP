@@ -184,6 +184,9 @@ class ACLComponent extends Component
             'import' => array('*'),
             'deleteTemplate' => array('*')
         ),
+        'darkmisp' => array(
+            'index' => array('*'),
+        ),
         'decayingModel' => array(
             "update" => array(),
             "export" => array('*'),
