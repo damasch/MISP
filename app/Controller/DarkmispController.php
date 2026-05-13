@@ -189,6 +189,9 @@ class DarkmispController extends AppController
             SELECT 
                 tags.id,
                 tags.name,
+                tags.colour,
+                tags.is_galaxy,
+                tags.local_only,
                 COUNT(*) AS counter
             FROM tags
             INNER JOIN (
@@ -208,7 +211,7 @@ class DarkmispController extends AppController
             ORDER BY counter DESC
             LIMIT 10
         ";
-
+        
         return $this->Tag->query($sql);
     }
 

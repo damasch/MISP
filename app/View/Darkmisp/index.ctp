@@ -123,7 +123,7 @@ foreach ($health as $name => $status) {
 }
 ?>
 
-<div class="min-h-screen text-gray-200">
+<div id="darkmisp-dashboard" class="min-h-screen text-gray-200">
     <div class="p-6 space-y-6">
 
         <div class="flex items-center justify-between gap-4">
@@ -150,13 +150,14 @@ foreach ($health as $name => $status) {
                             <?= $scope === 'mine' ? 'checked="checked"' : '' ?>>
 
                         <span class="
+                            p-1
                             relative w-10 h-5 rounded-full transition-all
                             bg-mispnight border border-mispdarkblue
                             peer-checked:bg-mispblue
                             peer-focus:ring-2 peer-focus:ring-mispblue/40
                             after:content-['']
                             after:absolute
-                            after:top-[2px]
+                            after:top-[1px]
                             after:left-[2px]
                             after:h-4
                             after:w-4
@@ -168,15 +169,18 @@ foreach ($health as $name => $status) {
                     </span>
                 </a>
 
-                <div class="flex items-center gap-2 px-3 py-2 rounded-lg border border-mispdarkblue bg-mispaccentnight">
-                    <i class="fas fa-bolt text-mispblue"></i>
+                <div
+                    class="flex items-center gap-2 px-3 py-2 rounded-lg border border-mispdarkblue bg-mispaccentnight transition-all duration-300">
+
+                    <i id="darkmisp-live-indicator" class="darkmisp-live-pulse fas fa-bolt text-mispblue"></i>
+
                     <span class="text-xs uppercase tracking-wider text-gray-400 print:text-black">
                         <?= __('Live Overview') ?>
                     </span>
                 </div>
             </div>
         </div>
-
+        
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
 
             <div class="relative overflow-hidden rounded-lg border border-mispdarkblue bg-mispaccentnight p-4">
@@ -289,83 +293,77 @@ foreach ($health as $name => $status) {
 
             <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
                 <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
-                    <i class="fas fa-tags text-mispblue"></i>
-                    <h2 class="text-lg font-medium print:text-black"><?= __('Top 10 Tags') ?></h2>
+                    <i class="fas fa-calendar-alt text-mispblue"></i>
+                    <h2 class="text-lg font-medium print:text-black"><?= __('Latest Events') ?></h2>
                 </div>
 
-                <div class="p-4 space-y-3">
-                    <?php foreach ($topTags as $row): ?>
-                        <div>
-                            <div class="flex justify-between gap-3 text-xs mb-1">
-                                <span class="truncate font-mono text-mispblue">
-                                    <?= h($row['tags']['name']) ?>
-                                </span>
-                                <span class="text-gray-400">
-                                    <?= h($row[0]['counter']) ?>
-                                </span>
-                            </div>
+                <div class="divide-y divide-mispdarkblue">
+                    <?php foreach ($latestEvents as $event): ?>
+                        <a href="<?= $baseurl ?>/events/view/<?= h($event['Event']['id']) ?>" class="block p-3 hover:bg-mispnight transition-colors">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <div class="text-sm text-mispblue truncate">
+                                        <?= h($event['Event']['info']) ?>
+                                    </div>
+                                    <div class="text-xs text-gray-400">
+                                        #<?= h($event['Event']['id']) ?> · <?= h($event['Event']['date']) ?>
+                                    </div>
+                                </div>
 
-                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-mispblue rounded-full" style="width: <?= h($barWidth($row[0]['counter'], $topTagMax)) ?>%"></div>
+                                <span class="text-xs uppercase tracking-wide rounded-full border px-2 py-0.5 <?= $event['Event']['published'] ? 'border-green-500/30 text-green-400 bg-green-500/20' : 'border-yellow-500/30 text-yellow-400 bg-yellow-500/20' ?>">
+                                    <?= $event['Event']['published'] ? __('published') : __('draft') ?>
+                                </span>
                             </div>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 </div>
             </div>
 
             <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
                 <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
-                    <i class="fas fa-sitemap text-mispblue"></i>
-                    <h2 class="text-lg font-medium print:text-black"><?= __('Top 10 Taxonomies') ?></h2>
+                    <i class="fas fa-cubes text-mispblue"></i>
+                    <h2 class="text-lg font-medium print:text-black"><?= __('Latest Objects') ?></h2>
                 </div>
 
-                <div class="p-4 space-y-3">
-                    <?php foreach ($topTaxonomies as $name => $count): ?>
-                        <div>
-                            <div class="flex justify-between gap-3 text-xs mb-1">
-                                <span class="truncate font-mono text-mispblue">
-                                    <?= h($name) ?>
-                                </span>
-                                <span class="text-gray-400">
-                                    <?= h($count) ?>
-                                </span>
+                <div class="divide-y divide-mispdarkblue">
+                    <?php foreach ($latestObjects as $object): ?>
+                        <a href="<?= $baseurl ?>/events/view/<?= h($object['objects']['event_id']) ?>" class="block p-3 hover:bg-mispnight transition-colors">
+                            <div class="text-sm text-mispblue truncate">
+                                <?= h($object['objects']['name']) ?>
                             </div>
 
-                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-mispblue rounded-full" style="width: <?= h($barWidth($count, $topTaxonomyMax)) ?>%"></div>
+                            <div class="text-xs text-gray-400">
+                                #<?= h($object['objects']['id']) ?> · Event <?= h($object['objects']['event_id']) ?>
                             </div>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 </div>
             </div>
 
             <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
                 <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
-                    <i class="fas fa-meteor text-mispblue"></i>
-                    <h2 class="text-lg font-medium print:text-black"><?= __('Top 10 Galaxies') ?></h2>
+                    <i class="fas fa-list text-mispblue"></i>
+                    <h2 class="text-lg font-medium print:text-black"><?= __('Latest Attributes') ?></h2>
                 </div>
 
-                <div class="p-4 space-y-3">
-                    <?php foreach ($topGalaxies as $row): ?>
-                        <div>
-                            <div class="flex justify-between gap-3 text-xs mb-1">
-                                <span class="truncate text-mispblue">
-                                    <?= h($row['galaxy_clusters']['value']) ?>
-                                </span>
-                                <span class="text-gray-400">
-                                    <?= h($row[0]['counter']) ?>
-                                </span>
+                <div class="divide-y divide-mispdarkblue">
+                    <?php foreach ($latestAttributes as $attribute): ?>
+                        <a href="<?= $baseurl ?>/events/view/<?= h($attribute['attributes']['event_id']) ?>" class="block p-3 hover:bg-mispnight transition-colors">
+                            <div class="text-sm text-mispblue truncate font-mono">
+                                <?= h($attributeValue($attribute)) ?>
                             </div>
 
-                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
-                                <div class="h-full bg-mispblue rounded-full" style="width: <?= h($barWidth($row[0]['counter'], $topGalaxyMax)) ?>%"></div>
+                            <div class="text-xs text-gray-400">
+                                <?= h($attribute['attributes']['type']) ?>
+                                · <?= h($attribute['attributes']['category']) ?>
+                                · Event <?= h($attribute['attributes']['event_id']) ?>
                             </div>
-                        </div>
+                        </a>
                     <?php endforeach; ?>
                 </div>
             </div>
-
         </div>
+
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
 
@@ -441,6 +439,95 @@ foreach ($health as $name => $status) {
                 </div>
             </div>
         </div>
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
+
+            <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
+                <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
+                    <i class="fas fa-tags text-mispblue"></i>
+                    <h2 class="text-lg font-medium print:text-black"><?= __('Top 10 Tags') ?></h2>
+                </div>
+
+                <div class="p-4 space-y-3">
+                    <?php foreach ($topTags as $row): ?>
+                        <?php 
+                        $tag = []; 
+                        $tag['Tag'] = $row['tags'];
+                        $tag['local'] = $row['local_only'];
+                        ?>
+                        <div>
+                            <div class="flex justify-between gap-3 text-xs mb-1">
+                                
+                                <span class="truncate font-mono text-mispblue">
+                                    <?= $this->element('Tags/single_tag', array(
+                                        'tag' => $tag
+                                    )); ?> 
+                                </span>
+                                <span class="text-gray-400">
+                                    <?= h($row[0]['counter']) ?>
+                                </span>
+                            </div>
+
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-mispblue rounded-full" style="width: <?= h($barWidth($row[0]['counter'], $topTagMax)) ?>%"></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
+                <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
+                    <i class="fas fa-sitemap text-mispblue"></i>
+                    <h2 class="text-lg font-medium print:text-black"><?= __('Top 10 Taxonomies') ?></h2>
+                </div>
+
+                <div class="p-4 space-y-3">
+                    <?php foreach ($topTaxonomies as $name => $count): ?>
+                        <div>
+                            <div class="flex justify-between gap-3 text-xs mb-1">
+                                <span class="truncate font-mono text-mispblue">
+                                    <?= h($name) ?>
+                                </span>
+                                <span class="text-gray-400">
+                                    <?= h($count) ?>
+                                </span>
+                            </div>
+
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-mispblue rounded-full" style="width: <?= h($barWidth($count, $topTaxonomyMax)) ?>%"></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
+                <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
+                    <i class="fas fa-meteor text-mispblue"></i>
+                    <h2 class="text-lg font-medium print:text-black"><?= __('Top 10 Galaxies') ?></h2>
+                </div>
+
+                <div class="p-4 space-y-3">
+                    <?php foreach ($topGalaxies as $row): ?>
+                        <div>
+                            <div class="flex justify-between gap-3 text-xs mb-1">
+                                <span class="truncate text-mispblue">
+                                    <?= h($row['galaxy_clusters']['value']) ?>
+                                </span>
+                                <span class="text-gray-400">
+                                    <?= h($row[0]['counter']) ?>
+                                </span>
+                            </div>
+
+                            <div class="h-2 bg-gray-800 rounded-full overflow-hidden">
+                                <div class="h-full bg-mispblue rounded-full" style="width: <?= h($barWidth($row[0]['counter'], $topGalaxyMax)) ?>%"></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+        </div>
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
             <?php
@@ -499,80 +586,7 @@ foreach ($health as $name => $status) {
             <?php endforeach; ?>
         </div>
 
-        <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
-
-            <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
-                <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
-                    <i class="fas fa-calendar-alt text-mispblue"></i>
-                    <h2 class="text-lg font-medium print:text-black"><?= __('Latest Events') ?></h2>
-                </div>
-
-                <div class="divide-y divide-mispdarkblue">
-                    <?php foreach ($latestEvents as $event): ?>
-                        <a href="<?= $baseurl ?>/events/view/<?= h($event['Event']['id']) ?>" class="block p-3 hover:bg-mispnight transition-colors">
-                            <div class="flex items-center justify-between gap-3">
-                                <div class="min-w-0">
-                                    <div class="text-sm text-mispblue truncate">
-                                        <?= h($event['Event']['info']) ?>
-                                    </div>
-                                    <div class="text-xs text-gray-400">
-                                        #<?= h($event['Event']['id']) ?> · <?= h($event['Event']['date']) ?>
-                                    </div>
-                                </div>
-
-                                <span class="text-xs uppercase tracking-wide rounded-full border px-2 py-0.5 <?= $event['Event']['published'] ? 'border-green-500/30 text-green-400 bg-green-500/20' : 'border-yellow-500/30 text-yellow-400 bg-yellow-500/20' ?>">
-                                    <?= $event['Event']['published'] ? __('published') : __('draft') ?>
-                                </span>
-                            </div>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
-                <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
-                    <i class="fas fa-cubes text-mispblue"></i>
-                    <h2 class="text-lg font-medium print:text-black"><?= __('Latest Objects') ?></h2>
-                </div>
-
-                <div class="divide-y divide-mispdarkblue">
-                    <?php foreach ($latestObjects as $object): ?>
-                        <a href="<?= $baseurl ?>/events/view/<?= h($object['objects']['event_id']) ?>" class="block p-3 hover:bg-mispnight transition-colors">
-                            <div class="text-sm text-mispblue truncate">
-                                <?= h($object['objects']['name']) ?>
-                            </div>
-
-                            <div class="text-xs text-gray-400">
-                                #<?= h($object['objects']['id']) ?> · Event <?= h($object['objects']['event_id']) ?>
-                            </div>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <div class="rounded-lg border border-mispdarkblue bg-mispaccentnight overflow-hidden">
-                <div class="p-3 border-b border-mispdarkblue flex items-center gap-2">
-                    <i class="fas fa-list text-mispblue"></i>
-                    <h2 class="text-lg font-medium print:text-black"><?= __('Latest Attributes') ?></h2>
-                </div>
-
-                <div class="divide-y divide-mispdarkblue">
-                    <?php foreach ($latestAttributes as $attribute): ?>
-                        <a href="<?= $baseurl ?>/events/view/<?= h($attribute['attributes']['event_id']) ?>" class="block p-3 hover:bg-mispnight transition-colors">
-                            <div class="text-sm text-mispblue truncate font-mono">
-                                <?= h($attributeValue($attribute)) ?>
-                            </div>
-
-                            <div class="text-xs text-gray-400">
-                                <?= h($attribute['attributes']['type']) ?>
-                                · <?= h($attribute['attributes']['category']) ?>
-                                · Event <?= h($attribute['attributes']['event_id']) ?>
-                            </div>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
+        
 
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-4">
             <div class="grid grid-cols-1 gap-4">
@@ -680,3 +694,84 @@ foreach ($health as $name => $status) {
 
     </div>
 </div>
+
+<style>
+@keyframes darkmispPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    70% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% }
+    100% { background-position: 200% }
+}
+
+.darkmisp-live-pulse {
+    animation: darkmispPulse 2s infinite;
+}
+
+.darkmisp-live-updated {
+    /* background-color: rgba(250, 204, 21, 0.25) !important; */
+    border-color: rgba(250, 204, 21, 0.8) !important;
+    transform: scale(1.3) !important;
+    background: linear-gradient(
+        98deg,
+        rgb(239, 68, 68),
+        rgb(250, 204, 21),
+        rgb(239, 68, 68)
+    );
+    background-size: 200% 100%;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: gradientMove 1.5s linear infinite;
+}
+
+</style>
+
+<script>
+$(function () {
+    function flashLiveIndicator() {
+        var $indicator = $('#darkmisp-live-indicator');
+
+        $indicator.addClass('darkmisp-live-updated');
+
+        setTimeout(function () {
+            $indicator.removeClass('darkmisp-live-updated');
+        }, 700);
+    }
+
+    function refreshDarkmispDashboard() {
+        var currentUrl = window.location.href;
+
+        $.ajax({
+            url: currentUrl,
+            method: 'GET',
+            cache: false,
+            data: {
+                _: Date.now()
+            },
+            success: function (html) {
+                var $newDashboard = $('<div>').html(html).find('#darkmisp-dashboard');
+
+                if ($newDashboard.length) {
+                    $('#darkmisp-dashboard').html($newDashboard.html());
+                    flashLiveIndicator();
+                }
+            }
+        });
+    }
+
+    setInterval(refreshDarkmispDashboard, 10000);
+});
+</script>

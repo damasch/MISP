@@ -1594,6 +1594,10 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+  }
   .ease-in {
     --tw-ease: var(--ease-in);
     transition-timing-function: var(--ease-in);
@@ -2658,6 +2662,12 @@
       position: absolute;
     }
   }
+  .after\:top-\[1px\] {
+    &::after {
+      content: var(--tw-content);
+      top: 1px;
+    }
+  }
   .after\:top-\[2px\] {
     &::after {
       content: var(--tw-content);
@@ -3493,6 +3503,10 @@
   syntax: "*";
   inherits: false;
 }
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-ease {
   syntax: "*";
   inherits: false;
@@ -3582,6 +3596,7 @@
       --tw-backdrop-opacity: initial;
       --tw-backdrop-saturate: initial;
       --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
       --tw-ease: initial;
       --tw-content: "";
       --tw-translate-x: 0;
