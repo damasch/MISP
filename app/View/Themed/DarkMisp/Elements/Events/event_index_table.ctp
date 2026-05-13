@@ -1,60 +1,70 @@
+<?php
+$date = time();
+$day = 86400;
+?>
+
 <div class="bg-mispaccentnight rounded-lg border border-gray-800 overflow-hidden">
     <div class="overflow-x-auto">
         <table class="w-full">
             <thead>
                 <tr class="border-b border-gray-800 bg-mispnight">
-                    <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                        <input 
-                            class="select_all select" 
-                            type="checkbox" 
-                            title="<?php echo __('Select all');?>" 
-                            role="button" 
-                            tabindex="0" 
-                            aria-label="<?php echo __('Select all events on current page');?>" 
-                            onclick="toggleAllCheckboxes();">
-                    </th>
-                    <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                        <?= $this->Paginator->sort('id', __('ID'), ['direction' => 'desc']) ?>
-                    </th>
-                    <th class="px-3 py-4 text-left text-sm font-medium text-gray-400 w-120">
-                        <?= $this->Paginator->sort('info');?>
-                    </th>
-                    <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                        <?= $this->Paginator->sort('date', null, array('direction' => 'desc'));?>
-                    </th>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => 'w-8 text-left',
+                        'content' => $this->Form->checkbox('select_all', array(
+                            'class' => 'select_all select',
+                            'title' => __('Select all'),
+                            'role' => 'button',
+                            'tabindex' => '0',
+                            'aria-label' => __('Select all events on current page'),
+                            'onclick' => 'toggleAllCheckboxes();',
+                            'hiddenField' => false,
+                        )),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => 'w-8 text-left',
+                        'content' => $this->Paginator->sort('id', __('ID'), ['direction' => 'desc']),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => 'min-w-8 text-left',
+                        'content' => $this->Paginator->sort('info'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => 'min-w-8 text-left',
+                        'content' => $this->Paginator->sort('date', null, array('direction' => 'desc')),
+                    )) ?>
                     <?php if (in_array('timestamp', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400" 
-                            title="<?= __('Last modified at') ?>">
-                            <?= $this->Paginator->sort('timestamp', __('Last modified at')) ?></th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'title' => __('Last modified at'),
+                            'content' => $this->Paginator->sort('timestamp', __('Last modified at')),
+                        )) ?>
                     <?php endif; ?>
-                    <?php
-                        if (Configure::read('MISP.showorgalternate') && Configure::read('MISP.showorg')):
-                    ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                            <?php echo $this->Paginator->sort('Orgc.name', __('Source org')); ?>
-                        </th>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                            <?php echo $this->Paginator->sort('Orgc.name', __('Member org')); ?>
-                        </th>
-                    <?php
-                        elseif (Configure::read('MISP.showorg') || $isAdmin):
-                    ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400 w-30">
-                            <?php echo $this->Paginator->sort('Orgc.name', __('Creator org')); ?>
-                        </th>
-                    <?php
-                            endif;
-                        $date = time();
-                        $day = 86400;
-                    ?>
+                    <?php if (Configure::read('MISP.showorgalternate') && Configure::read('MISP.showorg')): ?>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'content' => $this->Paginator->sort('Orgc.name', __('Source Org'))
+                        )) ?>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'content' => $this->Paginator->sort('Orgc.name', __('Member Org')),
+                        )) ?>
+                    <?php elseif (Configure::read('MISP.showorg') || $isAdmin): ?>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'content' => $this->Paginator->sort('Orgc.name', __('Creator Org')),
+                        )) ?>
+                    <?php endif; ?>
                     <?php if (in_array('owner_org', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400 w-30">
-                            <?= $this->Paginator->sort('Org.name', __('Owner org')) ?>
-                        </th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'content' => $this->Paginator->sort('Orgc.name', __('Owner Org')),
+                        )) ?>
                     <?php endif; ?>
                     <?php if (in_array('creator_user', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                            <?= $this->Paginator->sort('user_id', __('Creator user')) ?></th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'content' => $this->Paginator->sort('Orgc.name', __('Creator user')),
+                        )) ?>
                     <?php endif; ?>
                     <?php if (in_array('clusters', $columns, true)): ?>
                         <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
@@ -68,26 +78,38 @@
                         <th class="px-3 py-4 text-left text-sm font-medium text-gray-400 w-150">
                             <?= __('Tags') ?>
                             <button id="toggleTags" 
-                                class="px-2 py-1 bg-gray-700 text-gray-400 rounded text-xs  break-keep inline-flex items-center">
+                                class="px-2 py-1 bg-gray-700 text-gray-400 rounded text-xs break-keep inline-flex items-center">
                                 +
                             </button>
                         </th>
                     <?php endif; ?>
                     <?php if (in_array('attribute_count', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400" 
-                            title="<?= __('Attribute Count') ?>"><?= $this->Paginator->sort('attribute_count', __('#Attr.')) ?></th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'title' => __('Attribute Count'),
+                            'content' => $this->Paginator->sort('attribute_count', __('#Attr.')),
+                        )) ?>
                     <?php endif; ?>
                     <?php if (in_array('correlations', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400" 
-                            title="<?= __('Correlation Count')  ?>"><?= __('#Corr.') ?></th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'title' => __('Correlation Count'),
+                            'content' => $this->Paginator->sort('correlations', __('#Corr.')),
+                        )) ?>
                     <?php endif; ?>
                     <?php if (in_array('report_count', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400" 
-                            title="<?= __('Report Count') ?>"><?= $this->Paginator->sort('report_count', __('#Reports')) ?></th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'title' => __('Report Count'),
+                            'content' => $this->Paginator->sort('report_count', __('#Reports.')),
+                        )) ?>
                     <?php endif; ?>
                     <?php if (in_array('sightings', $columns, true)): ?>
-                        <th class="px-3 py-4 text-left text-sm font-medium text-gray-400" 
-                            title="<?= __('Sighting Count')?>"><?= __('#Sightings') ?></th>
+                        <?= $this->element('Generics/table/th', array(
+                            'class' => 'min-w-8 text-left',
+                            'title' => __('Sighting Count'),
+                            'content' => $this->Paginator->sort('report_count', __('#Sightings.')),
+                        )) ?>
                     <?php endif; ?>
                     <?php if (in_array('proposals', $columns, true)): ?>
                         <th class="px-3 py-4 text-left text-sm font-medium text-gray-400" 

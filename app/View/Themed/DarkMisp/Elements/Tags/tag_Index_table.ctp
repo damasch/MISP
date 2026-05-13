@@ -3,39 +3,48 @@
         <table class="w-full">
             <thead>
                 <tr class="border-b border-gray-800 bg-mispnight">
-                    <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                        <?= __('ID') ?>
-                    </th>
-                    <th class="px-3 py-4 text-left text-sm font-medium text-gray-400">
-                        <?= __('Name') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Exportable') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Hidden') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Local Only') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Restricted to org') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Restricted to user') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Taxonomy') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Tagged events') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Favourite') ?>
-                    </th>
-                    <th class="px-3 py-4 text-center text-sm font-medium text-gray-400">
-                        <?= __('Actions') ?>
-                    </th>
+                    <?= $this->element('Generics/table/th', array(
+                        'content' => __('ID'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'content' => __('Name'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Exportable'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Hidden'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Local Only'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Restricted to org'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Restricted to user'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Taxonomy'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Tagged events'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Favourite'),
+                    )) ?>
+                    <?= $this->element('Generics/table/th', array(
+                        'class' => "text-center",
+                        'content' => __('Actions'),
+                    )) ?>
                 </tr>
             </thead>
             <tbody>
@@ -106,8 +115,8 @@
                             ]); ?>
 
                             <button type="submit"
-                                    class="toggleFavoriteSettings"
-                                    data-tag-id="<?= h($tag_id) ?>">
+                                class="toggleFavoriteSettings"
+                                data-tag-id="<?= h($tag_id) ?>">
                                 <span class="border-1 border-mispblue w-6 h-6 inline-block text-center rounded-sm">
                                     <i class="fa fa-check <?= $tag["Tag"]["favourite"] ? '' : 'invisible hover:visible' ?>"></i>
                                 </span>
@@ -115,22 +124,6 @@
 
                             <?= $this->Form->end(); ?>
                             
-                            <?php
-                            // echo $this->Form->create('FavouriteTag'. $tag["Tag"]["id"], array(
-                            //     'url' => $baseurl . '/favourite_tags/toggle',
-                            //     'name' => 'FavouriteTag',
-                            //     'data-form-favourite-tag' => '',
-                            // ));
-                            // echo $this->Form->input('data', array(
-                            //     'type' => 'checkbox',
-                            //     'label' => '',
-                            //     'name' => 'data',
-                            //     'data-check-favourite-tag' => '',
-                            //     'value' => $tag["Tag"]["id"],
-                            //     'checked' => $tag["Tag"]["favourite"],
-                            // ));
-                            // echo $this->Form->end();
-                            ?>
                         </td>
                         <td>
                             <?php // var_dump($tag); ?>

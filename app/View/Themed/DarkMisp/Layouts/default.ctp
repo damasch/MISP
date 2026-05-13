@@ -38,7 +38,7 @@
 </head>
 <body data-controller="<?= h($this->params['controller']) ?>" data-action="<?= h($this->params['action']) ?>">
     <div id="root" 
-        class="dark fixed bg-background text-foreground transition-all">
+        class="dark static overflow-visible bg-background text-foreground transition-all top-auto left-auto right-auto bottom-auto">
         <div id="popover_form" class="ajax_popover_form"></div>
         <div id="popover_form_large" class="ajax_popover_form ajax_popover_form_large"></div>
         <div id="popover_form_x_large" class="ajax_popover_form ajax_popover_form_x_large"></div>
@@ -56,7 +56,7 @@
                     $topPadding = '0';
                 }
             ?>
-            <main id="mainContent" class="dark fixed top-16 left-64 bottom-0 right-0 text-grey-400 overflow-auto bg-background text-foreground transition-all z-30">
+            <main id="mainContent" class="dark relative top-16 left-64 max-w-[calc(100vw-16rem)] bottom-0 right-0 text-grey-400 overflow-auto bg-background text-foreground transition-all z-30">
                 <div class="absolute inset-0 overflow-hidden pointer-events-none">
                     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" ></div>
                     <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" ></div>
